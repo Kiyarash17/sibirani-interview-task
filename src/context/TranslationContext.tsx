@@ -1,7 +1,6 @@
-
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import initialData from '../data/initialData';
-import { loadData, saveData } from '../utils/storage';
+import { createContext, useContext, useState, useEffect } from "react";
+import initialData from "../data/initialData";
+import { loadData, saveData } from "../utils/storage";
 
 type Translations = {
   [language: string]: {
@@ -23,18 +22,22 @@ type TranslationContextType = {
   reorderKeywords: (newOrder: string[]) => void;
 };
 
-const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
+const TranslationContext = createContext<TranslationContextType | undefined>(
+  undefined
+);
 
-export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [data, setData] = useState<AppData>(() => loadData() || initialData);
-  const [currentLanguage, setCurrentLanguage] = useState<string>('en');
+  const [currentLanguage, setCurrentLanguage] = useState<string>("en");
 
   useEffect(() => {
     saveData(data);
   }, [data]);
 
   const editTranslation = (keyword: string, lang: string, newValue: string) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
       translations: {
         ...prev.translations,
@@ -47,13 +50,13 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const addKeyword = (keyword: string, lang: string, value: string) => {
-    setData(prev => {
+    setData((prev) => {
       const updatedTranslations: Translations = {};
 
       for (const language of Object.keys(prev.translations)) {
         updatedTranslations[language] = {
           ...prev.translations[language],
-          [keyword]: language === lang ? value : '',
+          [keyword]: language === lang ? value : "",
         };
       }
 
@@ -65,7 +68,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
   };
 
   const reorderKeywords = (newOrder: string[]) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
       order: newOrder,
     }));
@@ -73,7 +76,14 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   return (
     <TranslationContext.Provider
-      value={{ data, currentLanguage, setCurrentLanguage, editTranslation, addKeyword, reorderKeywords }}
+      value={{
+        data,
+        currentLanguage,
+        setCurrentLanguage,
+        editTranslation,
+        addKeyword,
+        reorderKeywords,
+      }}
     >
       {children}
     </TranslationContext.Provider>
@@ -83,7 +93,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({ c
 export const useTranslation = () => {
   const context = useContext(TranslationContext);
   if (!context) {
-    throw new Error('useTranslation must be used within a TranslationProvider');
+    throw new Error("useTranslation must be used within a TranslationProvider");
   }
   return context;
 };

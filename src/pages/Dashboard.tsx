@@ -1,11 +1,9 @@
-import React from "react";
 import { useTranslation } from "../context/TranslationContext";
-import KeywordTable from "../components/KeywordTable";
 import AddKeywordForm from "../components/AddKeywordForm";
+import DraggableKeywordList from "../components/DraggableKeywordList";
 
 const Dashboard = () => {
   const { currentLanguage, setCurrentLanguage } = useTranslation();
-
   const languages = ["en", "fr", "de"];
 
   return (
@@ -28,7 +26,9 @@ const Dashboard = () => {
       </label>
 
       <AddKeywordForm />
-      <KeywordTable />
+
+      {/* فقط لیست قابل درگ رو نمایش بده */}
+      <DraggableKeywordList />
     </div>
   );
 };

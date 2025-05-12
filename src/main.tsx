@@ -1,13 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { RouterProvider } from 'react-router-dom'
 import './styles/index.css'
-import App from './App.tsx'
-import { TranslationProvider } from './context/TranslationContext.tsx'
+import { router } from './router'
+import { TranslationProvider } from './context/TranslationContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <TranslationProvider>
-      <App />
+      <RouterProvider router={router} />
     </TranslationProvider>
   </StrictMode>,
 )

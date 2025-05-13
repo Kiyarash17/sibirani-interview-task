@@ -21,7 +21,6 @@ const AddKeywordForm = () => {
         type="text"
         placeholder="New keyword"
         value={keyword}
-        className="text-green-400"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
       />
       <Input

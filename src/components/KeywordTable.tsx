@@ -16,7 +16,7 @@ const KeywordTable = () => {
           ))}
         </tr>
       </thead>
-      <tbody>
+      <tbody className="space-y-4">
         {data.order.map((keyword) => (
           <tr key={keyword}>
             <td className="border p-2 font-semibold">{keyword}</td>

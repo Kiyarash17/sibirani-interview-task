@@ -66,7 +66,7 @@ function DraggableKeyword({ keyword }: { keyword: string }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="flex gap-2 p-2 items-center bg-white"
+      className="flex gap-2 p-2 items-center bg-white my-5 cursor-grab active:cursor-grabbing"
     >
       <span className="w-32 font-bold">{keyword}</span>
       {languages.map((lang) => (

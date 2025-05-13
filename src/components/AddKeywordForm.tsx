@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "../context/TranslationContext";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
 
 const AddKeywordForm = () => {
   const [keyword, setKeyword] = useState("");
@@ -15,26 +17,21 @@ const AddKeywordForm = () => {
 
   return (
     <div className="mb-4 flex gap-2">
-      <input
+      <Input
         type="text"
         placeholder="New keyword"
         value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        className="border p-1"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setKeyword(e.target.value)}
       />
-      <input
+      <Input
         type="text"
         placeholder={`Translation in ${currentLanguage.toUpperCase()}`}
         value={value}
-        onChange={(e) => setValue(e.target.value)}
-        className="border p-1"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
       />
-      <button
-        onClick={handleAdd}
-        className="bg-blue-500 text-white px-3 py-1 rounded"
-      >
+      <Button onClick={handleAdd}>
         Add
-      </button>
+      </Button>
     </div>
   );
 };

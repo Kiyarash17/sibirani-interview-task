@@ -14,6 +14,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useTranslation } from "../context/TranslationContext";
+import { Input } from "../components/ui/input";
+import { Card } from "../components/ui/card";
 
 function DraggableKeywordList() {
   const { data, reorderKeywords } = useTranslation();
@@ -59,23 +61,23 @@ function DraggableKeyword({ keyword }: { keyword: string }) {
   };
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
       {...attributes}
       {...listeners}
-      className="flex gap-2 p-2 border-b items-center bg-white"
+      className="flex gap-2 p-2 items-center bg-white"
     >
       <span className="w-32 font-bold">{keyword}</span>
       {languages.map((lang) => (
-        <input
+        <Input
           key={lang}
           value={data.translations[lang][keyword] || ""}
-          onChange={(e) => editTranslation(keyword, lang, e.target.value)}
-          className="border p-1 w-full"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => editTranslation(keyword, lang, e.target.value)}
+          className="w-full"
         />
       ))}
-    </div>
+    </Card>
   );
 }
 

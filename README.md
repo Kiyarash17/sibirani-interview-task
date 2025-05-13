@@ -1,54 +1,117 @@
-# React + TypeScript + Vite
+# Word Translation Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React + TypeScript single-page application for managing and viewing keyword translations with persistent storage in `localStorage`.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Management Dashboard**
+  - View and inline-edit translations for all keywords and languages
+  - Add a new keyword (with an initial translation in one language; others start empty)
+  - Drag-and-drop reorder of keywords (using [@dnd-kit](https://github.com/clauderic/dnd-kit))
+- **Public View**
+  - Read-only list of keywords and their translations
+  - Switch display language on the fly
+  - “— no translation —” placeholder for missing translations
+- **Data Persistence**
+  - All data stored under the key `translation-data` in `localStorage`
+  - Automatic sync after every edit, add, or reorder
+- **Responsive Design**
+  - Mobile-friendly layouts and inputs
+- **Type-safe & Fast**
+  - Built with TypeScript + SWC (via Vite) for lightning-fast HMR and builds
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Framework & Language**  
+  - React  
+  - TypeScript + SWC  
+- **Build Tool**  
+  - Vite (`react-ts` template with `@vitejs/plugin-react-swc`)  
+- **Routing**  
+  - react-router-dom  
+- **Drag & Drop**  
+  - @dnd-kit/core & @dnd-kit/sortable  
+- **Styling**  
+  - Tailwind CSS (optionally shadcn/ui or MUI)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 📁 Project Structure
+
+```
+word-translation-dashboard/
+├─ src/
+│  ├─ components/
+│  │  ├─ AddKeywordForm.tsx
+│  │  ├─ DraggableKeywordList.tsx
+│  │  └─ …  
+│  ├─ context/
+│  │  └─ TranslationContext.tsx
+│  ├─ data/
+│  │  └─ initialData.ts
+│  ├─ pages/
+│  │  ├─ Dashboard.tsx
+│  │  └─ PublicView.tsx
+│  ├─ utils/
+│  │  └─ storage.ts
+│  ├─ App.tsx
+│  └─ main.tsx
+├─ public/
+├─ package.json
+├─ tsconfig.json
+├─ vite.config.ts
+└─ README.md
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 💾 Data Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```ts
+type Translations = {
+  [langCode: string]: { [keyword: string]: string };
+};
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+type AppData = {
+  order: string[];        // display order of keywords
+  translations: Translations;
+};
 ```
+
+- **order**: controls list sorting and drag-and-drop order  
+- **translations**: nested map of language → keyword → translation  
+
+> **Why this structure?**  
+> A flat `order` array plus a nested object map provides O(1) lookup for any translation, easy JSON serialization, and straightforward syncing with `localStorage`.
+
+## 🚀 Installation & Running Locally
+
+1. Clone or unzip the project:
+   ```bash
+   git clone <repo-url>   # or unzip word-translation-dashboard.zip
+   cd word-translation-dashboard
+   ```
+2. Install dependencies and start the development server:
+   ```bash
+   yarn install
+   yarn dev
+   ```
+3. Open your browser at:
+   - Management Dashboard: `http://localhost:5173/dashboard`
+   - Public View:          `http://localhost:5173/view`
+
+## 🔧 Optional Enhancements
+
+_(Add any you’ve implemented, e.g.)_  
+- Dark mode toggle (via Tailwind’s `dark:` utilities)  
+- Search/filter input above the keyword list  
+- Animated language-switch transitions with Framer Motion  
+
+## ✅ Manual Testing
+
+- **Add** a new keyword → verify it appears in both Dashboard and Public View  
+- **Edit** translations inline → verify changes persist on page reload  
+- **Reorder** via drag-and-drop → confirm `localStorage` order and UI match  
+- **Switch** languages in both views → expect correct translations or placeholder  
+
+## 📞 Contact
+
+- **Author:** Kiyarash  
+- **Email:** your.email@example.com  
+- **GitHub:** github.com/yourusername

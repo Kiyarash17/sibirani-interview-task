@@ -33,6 +33,8 @@ A React + TypeScript single-page application for managing and viewing keyword tr
   - @dnd-kit/core & @dnd-kit/sortable  
 - **Styling**  
   - Tailwind CSS (optionally shadcn/ui or MUI)
+- **Animation**  
+  - Motion Framer
 
 ## 📁 Project Structure
 
@@ -61,24 +63,6 @@ word-translation-dashboard/
 └─ README.md
 ```
 
-## 💾 Data Structure
-
-```ts
-type Translations = {
-  [langCode: string]: { [keyword: string]: string };
-};
-
-type AppData = {
-  order: string[];        // display order of keywords
-  translations: Translations;
-};
-```
-
-- **order**: controls list sorting and drag-and-drop order  
-- **translations**: nested map of language → keyword → translation  
-
-> **Why this structure?**  
-> A flat `order` array plus a nested object map provides O(1) lookup for any translation, easy JSON serialization, and straightforward syncing with `localStorage`.
 
 ## 🚀 Installation & Running Locally
 
@@ -112,6 +96,6 @@ _(Add any you’ve implemented, e.g.)_
 
 ## 📞 Contact
 
-- **Author:** Kiyarash  
-- **Email:** your.email@example.com  
-- **GitHub:** github.com/yourusername
+- **Author:** Kiyarash Hadidian  
+- **Email:** kiyarashhadidian@gmail.com 
+- **GitHub:** github.com/Kiyarash17

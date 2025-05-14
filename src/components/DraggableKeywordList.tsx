@@ -14,10 +14,22 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useTranslation } from "../context/TranslationContext";
+import { Input } from "../components/ui/input";
+import { Card } from "../components/ui/card";
 
-function DraggableKeywordList() {
+type Props = {
+  currentLang: string;
+};
+
+function DraggableKeywordList(props: Props) {
   const { data, reorderKeywords } = useTranslation();
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5, // بخاطر باگ اینپوت ها ادد شد که کار نمیکردن
+      },
+    })
+  );
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -38,18 +50,28 @@ function DraggableKeywordList() {
         items={data.order}
         strategy={verticalListSortingStrategy}
       >
-        {data.order.map((keyword) => (
-          <DraggableKeyword key={keyword} keyword={keyword} />
-        ))}
+        <Card className="p-5 gap-0 overflow-y-auto">
+          {data.order.map((keyword) => (
+            <DraggableKeyword
+              key={keyword}
+              keyword={keyword}
+              currentLang={props.currentLang!}
+            />
+          ))}
+        </Card>
       </SortableContext>
     </DndContext>
   );
 }
 
-function DraggableKeyword({ keyword }: { keyword: string }) {
+function DraggableKeyword({
+  keyword,
+  currentLang,
+}: {
+  keyword: string;
+  currentLang: string;
+}) {
   const { data, editTranslation } = useTranslation();
-  const languages = Object.keys(data.translations);
-
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: keyword });
 
@@ -64,17 +86,17 @@ function DraggableKeyword({ keyword }: { keyword: string }) {
       style={style}
       {...attributes}
       {...listeners}
-      className="flex gap-2 p-2 border-b items-center bg-white"
+      className="flex gap-2 py-4 items-center justify-between bg-white cursor-grab active:cursor-grabbing border-b"
     >
       <span className="w-32 font-bold">{keyword}</span>
-      {languages.map((lang) => (
-        <input
-          key={lang}
-          value={data.translations[lang][keyword] || ""}
-          onChange={(e) => editTranslation(keyword, lang, e.target.value)}
-          className="border p-1 w-full"
-        />
-      ))}
+      <Input
+        key={currentLang}
+        value={data.translations[currentLang][keyword] || "........"}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          editTranslation(keyword, currentLang, e.target.value)
+        }
+        className={`min-w-8 w-fit border-none text-center ${!data.translations[currentLang][keyword] ? "bg-red-500 text-white": "bg-gray-200" }`}
+      />
     </div>
   );
 }
